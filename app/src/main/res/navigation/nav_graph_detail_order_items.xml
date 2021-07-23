@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_detail_order_items"
+    app:startDestination="@id/fragment_detail_order_items">
+
+    <fragment
+        android:id="@+id/fragment_products"
+        android:name="com.bl4ckcode.sces.ui.products.list.ProductFragment"
+        android:label="@string/title_products"
+        tools:layout="@layout/fragment_products" />
+
+    <fragment
+        android:id="@+id/fragment_orders"
+        android:name="com.bl4ckcode.sces.ui.orders.list.OrdersFragment"
+        android:label="@string/title_orders"
+        tools:layout="@layout/fragment_orders" />
+
+    <fragment
+        android:id="@+id/fragment_detail_order_items"
+        android:name="com.bl4ckcode.sces.ui.orderItems.detail.DetailOrderItemsFragment"
+        android:label="@string/title_order_items"
+        tools:layout="@layout/fragment_detail_order_items">
+        <action
+            android:id="@+id/action_fragment_detail_order_items_to_orders"
+            app:destination="@id/fragment_orders" />
+        <action
+            android:id="@+id/action_fragment_detail_order_items_to_products"
+            app:destination="@id/fragment_products" />
+    </fragment>
+</navigation>

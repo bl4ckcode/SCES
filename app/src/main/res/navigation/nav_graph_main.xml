@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation">
+
+    <include app:graph="@navigation/nav_graph_detail_product" />
+    <include app:graph="@navigation/nav_graph_detail_order" />
+    <include app:graph="@navigation/nav_graph_detail_category" />
+    <include app:graph="@navigation/nav_graph_detail_order_items" />
+
+    <fragment
+        android:id="@+id/fragment_products"
+        android:name="com.bl4ckcode.sces.ui.products.list.ProductFragment"
+        android:label="@string/title_products"
+        tools:layout="@layout/fragment_products">
+        <action
+            android:id="@+id/action_fragment_products_to_nav_graph_detail"
+            app:destination="@id/nav_graph_detail_product" />
+        <action
+            android:id="@+id/action_fragment_products_to_search"
+            app:destination="@id/fragment_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_orders"
+        android:name="com.bl4ckcode.sces.ui.orders.list.OrdersFragment"
+        android:label="@string/title_orders"
+        tools:layout="@layout/fragment_orders">
+        <action
+            android:id="@+id/action_fragment_orders_to_nav_graph_detail"
+            app:destination="@id/nav_graph_detail_order" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.bl4ckcode.sces.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/fragment_categories"
+        android:name="com.bl4ckcode.sces.ui.products.categories.CategoriesFragment"
+        android:label="@string/title_categories"
+        tools:layout="@layout/fragment_categories">
+        <action
+            android:id="@+id/action_fragment_categories_to_nav_graph_detail"
+            app:destination="@id/nav_graph_detail_category" />
+        <action
+            android:id="@+id/action_fragment_categories_to_search"
+            app:destination="@id/fragment_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_order_items"
+        android:name="com.bl4ckcode.sces.ui.orderItems.list.OrderItemsFragment"
+        android:label="@string/title_order_items"
+        tools:layout="@layout/fragment_order_items">
+        <action
+            android:id="@+id/action_fragment_order_items_to_nav_graph_detail"
+            app:destination="@id/nav_graph_detail_order_items" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_search"
+        android:name="com.bl4ckcode.sces.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
+</navigation>

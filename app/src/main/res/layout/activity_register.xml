@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="email"
+            type="String" />
+
+        <variable
+            name="password"
+            type="String" />
+
+        <variable
+            name="confirmPassword"
+            type="String" />
+    </data>
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/loginCard"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/loginViewsMargin"
+        android:layout_marginBottom="@dimen/loginViewsMargin"
+        android:background="@color/whiteCardColor"
+        android:elevation="5dp"
+        app:cardCornerRadius="@dimen/loginCardRadius">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="@style/Widget.MaterialComponents.CircularProgressIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/loading_color"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone" />
+
+            <LinearLayout
+                style="@style/linearParent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/loginViewsMargin">
+
+                <TextView
+                    style="@style/headerTextPrimary"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="@string/register" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/signup_text_margin_top"
+                    android:hint="@string/email"
+                    android:tooltipText="@string/email"
+                    app:hintTextColor="@color/primary_color_on">
+
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        style="@style/modifiedEditText"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="@={email}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/signup_text_margin_top"
+                    android:hint="@string/login_password_hint"
+                    android:tooltipText="@string/login_password_hint"
+                    app:hintTextColor="@color/primary_color_on">
+
+                    <EditText
+                        android:id="@+id/editTextPassword"
+                        style="@style/modifiedEditText"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:text="@={password}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/signup_text_margin_top"
+                    android:hint="@string/login_confirm_password_hint"
+                    android:tooltipText="@string/login_confirm_password_hint"
+                    app:hintTextColor="@color/primary_color_on">
+
+                    <EditText
+                        android:id="@+id/editTextConfirmPassword"
+                        style="@style/modifiedEditText"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:text="@={confirmPassword}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonRegister"
+                    style="@style/loginButton"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:text="@string/register" />
+
+                <TextView
+                    android:id="@+id/txtViewReturnLogin"
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="@string/signup_login_hint"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

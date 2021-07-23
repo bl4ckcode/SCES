@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/fragment_products"
+        android:icon="@drawable/ic_menu_products"
+        android:title="@string/title_products" />
+
+    <item
+        android:id="@+id/fragment_orders"
+        android:icon="@drawable/ic_menu_orders"
+        android:title="@string/title_orders" />
+
+    <item
+        android:id="@+id/fragment_categories"
+        android:icon="@drawable/ic_menu_category"
+        android:title="@string/title_categories" />
+
+    <item
+        android:id="@+id/fragment_order_items"
+        android:icon="@drawable/ic_order_items"
+        android:title="@string/title_order_items" />
+
+    <item
+        android:id="@+id/fragment_profile"
+        android:icon="@drawable/ic_menu_profile"
+        android:title="@string/title_profile" />
+
+</menu>

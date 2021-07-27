@@ -86,10 +86,13 @@ class DetailOrderFragment : Fragment() {
                 order?.let { orderIt ->
                     binding.numero = orderIt.codigoPedido
                     binding.data = orderIt.dataPedido
+                    binding.nomeCliente = orderIt.clientes.nome
 
                     binding.orderIdEditText.isEnabled = false
+                    binding.orderClientNameEditText.isEnabled = false
 
                     binding.btnDeleteOrder.show()
+                    binding.orderClientNameTextInput.show()
 
                     binding.btnEditOrder.setImageDrawable(
                         ContextCompat.getDrawable(

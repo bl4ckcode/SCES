@@ -14,6 +14,10 @@ class OrdersResponse(pedido: Pedido) {
     @Expose
     var cliente: String? = null
 
+    @SerializedName("nome_cliente")
+    @Expose
+    var nomeCliente: String? = null
+
     @SerializedName("data_pedido")
     @Expose
     var dataPedido: String? = null
@@ -26,6 +30,7 @@ class OrdersResponse(pedido: Pedido) {
         codigoPedido = pedido.codigoPedido
         dataPedido = pedido.dataPedido
         cliente = pedido.clientes.id.toString()
+        nomeCliente = pedido.clientes.nome
         pedido.itens_do_pedido.forEach {
             itensPedido.add(OrderItemsResponse(it))
         }

@@ -76,6 +76,15 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
         binding.btnCreateOrder.setOnClickListener {
             navigateDetail()
         }
+
+        binding.btnGenOrderLog.setOnClickListener {
+            navigateLog()
+        }
+    }
+
+    private fun navigateLog() {
+        Navigation.findNavController(binding.root)
+            .navigate(R.id.action_fragment_orders_to_log)
     }
 
     override fun orderClicked(order: Pedido) {
@@ -87,7 +96,10 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
             }
         } ?: run {
             val bundle = Bundle()
-            bundle.putSerializable(DetailOrderFragment.ARG_ORDERS_LIST, getOrderItemsForOrder(order) as Serializable)
+            bundle.putSerializable(
+                DetailOrderFragment.ARG_ORDERS_LIST,
+                getOrderItemsForOrder(order) as Serializable
+            )
             bundle.putSerializable(DetailOrderFragment.ARG_ORDER, order)
             navigateDetail(bundle)
         }

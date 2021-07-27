@@ -19,12 +19,10 @@ class OrderAdapter(
     inner class OrderAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val orderNumber: TextView = itemView.findViewById(R.id.order_title)
         val orderProducts: TextView = itemView.findViewById(R.id.order_subtitle)
-        val orderPrice: TextView = itemView.findViewById(R.id.order_price)
 
         fun bind(order: Pedido) {
             orderNumber.text = "Pedido #" + order.codigoPedido
             orderProducts.text = order.dataPedido
-            orderPrice.text = "R$ ${order.itens_do_pedido.map { it.produto.preco }.sum()}"
             itemView.setOnClickListener { orderAdapterListener.orderClicked(order) }
         }
     }

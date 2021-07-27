@@ -19,6 +19,9 @@ interface OrdersApi {
     @GET("/pedidos")
     fun getOrders(): Call<List<OrdersResponse>?>
 
+    @GET("/pedidos/")
+    fun getOrdersForDate(@Query("data_pedido") order_date: String): Call<List<OrdersResponse>?>
+
     @POST("/pedidos/")
     fun postOrder(@Body order: OrdersResponse): Call<OrdersResponse?>
 
@@ -51,9 +54,17 @@ class OrdersRepository(apiKey: String) {
     val detailOrderLiveData: MutableLiveData<DetailOrderUiModel?>
         get() = _detailOrdersLiveData
 
-    fun getOrders() {
-        ordersApi.getOrders()
-            .enqueue(object : Callback<List<OrdersResponse>?> {
+    fun getOrders(date: String? = null) {
+        var call: Call<List<OrdersResponse>?>? = null
+
+        date?.let {
+            call = ordersApi.getOrdersForDate(it)
+        } ?: run {
+            call = ordersApi.getOrders()
+        }
+
+        call?.let { it ->
+            it.enqueue(object : Callback<List<OrdersResponse>?> {
                 override fun onResponse(
                     call: Call<List<OrdersResponse>?>?,
                     response: Response<List<OrdersResponse>?>
@@ -65,12 +76,20 @@ class OrdersRepository(apiKey: String) {
 
                             response.body()?.map { orderResponse ->
                                 val pedido = EcommerceposFactory.eINSTANCE.createPedido()
+                                val cliente = EcommerceposFactory.eINSTANCE.createCliente()
+
+                                cliente.id = orderResponse.cliente?.toInt() ?: run { 0 }
+                                cliente.nome = orderResponse.nomeCliente
 
                                 pedido.codigoPedido = orderResponse.codigoPedido
                                 pedido.dataPedido = orderResponse.dataPedido
+                                pedido.clientes = cliente
 
-                                itensPedido.add(orderResponse.itensPedido.mapNotNull { it?.asItensPedido() }
-                                    .first())
+                                if (orderResponse.itensPedido.isNotEmpty()) {
+                                    itensPedido.add(orderResponse.itensPedido.mapNotNull { it?.asItensPedido() }
+                                        .first())
+                                }
+
                                 pedidos.add(pedido)
                             }
 
@@ -93,6 +112,7 @@ class OrdersRepository(apiKey: String) {
                     ordersLiveData.postValue(OrderUiModel(true))
                 }
             })
+        }
     }
 
     fun order(step: Step, order: Pedido) {
@@ -114,6 +134,7 @@ class OrdersRepository(apiKey: String) {
                             val cliente = EcommerceposFactory.eINSTANCE.createCliente()
 
                             cliente.id = orderResponse.cliente?.toInt() ?: run { 0 }
+                            cliente.nome = orderResponse.nomeCliente
 
                             pedido.codigoPedido = orderResponse.codigoPedido
                             pedido.dataPedido = orderResponse.dataPedido

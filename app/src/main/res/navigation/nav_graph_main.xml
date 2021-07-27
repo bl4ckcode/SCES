@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_fragment_orders_to_nav_graph_detail"
             app:destination="@id/nav_graph_detail_order" />
+        <action
+            android:id="@+id/action_fragment_orders_to_log"
+            app:destination="@id/fragment_order_log" />
     </fragment>
 
     <fragment
@@ -66,4 +69,10 @@
         android:name="com.bl4ckcode.sces.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/fragment_order_log"
+        android:name="com.bl4ckcode.sces.ui.log.OrderLogFragment"
+        android:label="Relatório item de pedido"
+        tools:layout="@layout/fragment_order_log" />
 </navigation>

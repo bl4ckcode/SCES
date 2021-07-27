@@ -39,4 +39,6 @@
     <string name="search_term">Termo</string>
     <string name="title_search">Pesquisa</string>
     <string name="order_price">Preço total</string>
+    <string name="order">Pedido</string>
+    <string name="order_client_name">CPF - Nome do cliente</string>
 </resources>

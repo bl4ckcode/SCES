@@ -101,6 +101,8 @@ class DetailOrderItemsFragment : Fragment() {
             bundle.putSerializable(OrdersFragment.SELECT_ORDER, true)
             navigateSelectOrder(bundle)
 
+            getItemOrderFromBinding()
+
             arguments = null
         }
 
@@ -108,6 +110,8 @@ class DetailOrderItemsFragment : Fragment() {
             val bundle = Bundle()
             bundle.putSerializable(ProductFragment.SELECT_PRODUCT, true)
             navigateSelectProducts(bundle)
+
+            getItemOrderFromBinding()
 
             arguments = null
         }

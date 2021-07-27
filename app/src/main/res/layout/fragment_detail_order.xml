@@ -10,7 +10,7 @@
             type="String" />
 
         <variable
-            name="idCliente"
+            name="nomeCliente"
             type="String" />
 
         <variable
@@ -29,7 +29,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.profile.ProfileFragment">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,6 +57,24 @@
                         android:background="@color/white"
                         android:inputType="number"
                         android:text="@={numero}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/order_client_name_text_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    android:hint="@string/order_client_name"
+                    android:tooltipText="@string/order_client_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/order_client_name_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:inputType="date"
+                        android:text="@={nomeCliente}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -92,16 +110,17 @@
                         android:background="@color/white"
                         android:enabled="false"
                         android:inputType="date"
-                        android:text="@={data}" />
+                        android:text="@={price}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/orderItems_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false" />
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <ProgressBar
             android:id="@+id/progress"

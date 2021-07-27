@@ -24,4 +24,8 @@ class OrdersViewModel(application: Application) : AndroidViewModel(application) 
     fun orders() {
         ordersRepository.getOrders()
     }
+
+    fun orderLogForDate(date: String) {
+        ordersRepository.getOrders(date)
+    }
 }

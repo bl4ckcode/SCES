@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.models.Produto
+import com.bl4ckcode.sces.util.toCurrency
 
 
 class ProductAdapter(
@@ -26,7 +27,7 @@ class ProductAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(product: Produto) {
             productName.text = product.nome
-            productPrice.text = "R$ ${product.preco}"
+            productPrice.text = product.preco.toCurrency()
             productDesc.text = "Quantidade: ${product.quantidadeEstoque}"
 
             itemView.setOnClickListener { productAdapterListener.productClicked(product) }

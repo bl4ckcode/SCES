@@ -16,10 +16,7 @@ import com.bl4ckcode.sces.models.Categoria
 import com.bl4ckcode.sces.models.EcommerceposFactory
 import com.bl4ckcode.sces.models.Produto
 import com.bl4ckcode.sces.ui.products.categories.CategoriesFragment
-import com.bl4ckcode.sces.util.getNavigationResult
-import com.bl4ckcode.sces.util.hide
-import com.bl4ckcode.sces.util.show
-import com.bl4ckcode.sces.util.toCurrencyString
+import com.bl4ckcode.sces.util.*
 
 class DetailProductFragment : Fragment() {
     private lateinit var detailProductViewModel: DetailProductViewModel
@@ -89,11 +86,13 @@ class DetailProductFragment : Fragment() {
             if (bundle.containsKey(ARG_PRODUCT)) {
                 val product = bundle.getSerializable(ARG_PRODUCT) as? Produto
                 product?.let {
+                    categoria = it.cetgorias
+
                     binding.code = it.codigoProduto
                     binding.name = it.nome
                     binding.price = it.preco.toCurrencyString()
                     binding.reserve = it.quantidadeEstoque.toString()
-                    binding.category = it.cetgorias.nome
+                    binding.category = categoria.nome
 
                     binding.productCodeEditText.isEnabled = false
 

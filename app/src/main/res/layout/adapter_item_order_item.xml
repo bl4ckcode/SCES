@@ -16,19 +16,39 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/order_id"
-            style="@style/ItemBoldText"
+            android:id="@+id/product_name"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:ellipsize="end"
+            android:lines="1"
             tools:text="TV 50' Samsung" />
 
-        <TextView
-            android:id="@+id/product_name"
-            style="@style/ItemBoldText"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            tools:text="TV 50' Samsung" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/product_amount"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textStyle="bold"
+                tools:text="" />
+
+            <TextView
+                android:id="@+id/product_price"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:textAlignment="textEnd"
+                android:textStyle="bold"
+                tools:text="R$2500" />
+        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

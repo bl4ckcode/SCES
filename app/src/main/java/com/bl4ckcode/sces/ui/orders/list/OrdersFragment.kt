@@ -53,7 +53,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
         arguments?.let {
             if (it.containsKey(SELECT_ORDER)) {
                 binding.btnCreateOrder.hide()
-                binding.btnGenOrderLog.hide()
+                binding.btnGenOrderLog.visibility = View.INVISIBLE
                 (activity as? MainActivity)?.hideBottomNav()
             }
         }

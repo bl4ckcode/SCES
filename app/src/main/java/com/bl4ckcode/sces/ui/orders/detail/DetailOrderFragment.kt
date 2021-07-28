@@ -19,6 +19,7 @@ import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
 import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 import com.bl4ckcode.sces.util.show
+import com.bl4ckcode.sces.util.toCurrency
 
 class DetailOrderFragment : Fragment() {
     private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
@@ -107,7 +108,8 @@ class DetailOrderFragment : Fragment() {
                 orderItensList = it.getSerializable(ARG_ORDERS_LIST) as ArrayList<ItensPedido>
 
                 binding.orderPriceTextInput.show()
-                binding.price = "R$ ${orderItensList.map { it.produto.preco }.sum()}"
+                binding.price =
+                    orderItensList.map { it.produto.preco * it.quantidade }.sum().toCurrency()
 
                 binding.orderItemsList.adapter = OrderItemAdapter(orderItensList)
                 binding.orderItemsList.show()

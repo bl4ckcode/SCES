@@ -73,6 +73,9 @@ class RegisterActivity : AppCompatActivity() {
 
                 Toast.makeText(this, "Operação bem sucedida!", Toast.LENGTH_LONG).show()
 
+                binding.email?.let {
+                    preferenceHelper.setEmail(it)
+                }
                 preferenceHelper.setApiKey(key)
 
                 val intent = Intent(this, MainActivity::class.java)

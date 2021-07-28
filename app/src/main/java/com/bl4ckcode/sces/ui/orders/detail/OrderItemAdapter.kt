@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.models.ItensPedido
+import com.bl4ckcode.sces.util.toCurrency
 
 class OrderItemAdapter(
     private val orderItens: List<ItensPedido>
@@ -15,13 +16,13 @@ class OrderItemAdapter(
 
     inner class OrderItemAdapterAdapterViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        val orderId: TextView = itemView.findViewById(R.id.order_id)
         val productName: TextView = itemView.findViewById(R.id.product_name)
+        val productPrice: TextView = itemView.findViewById(R.id.product_price)
 
         @SuppressLint("SetTextI18n")
         fun bind(orderItem: ItensPedido) {
-            orderId.text = "Pedido #${orderItem.pedido.codigoPedido}"
             productName.text = orderItem.produto.nome
+            productPrice.text = orderItem.produto.preco.toCurrency()
         }
     }
 

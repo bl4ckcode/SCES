@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.models.Pedido
+import com.bl4ckcode.sces.util.toCurrency
 
 class OrderLogAdapter(
     private val orders: ArrayList<Pedido>,
@@ -24,7 +25,7 @@ class OrderLogAdapter(
             orderClientName.text = order.clientes.nome
             orderDate.text = order.dataPedido
             orderProducts.text = order.clientes.endereco
-            orderPrice.text = "R$ ${order.clientes.telefone}"
+            orderPrice.text = order.clientes.telefone.toDouble().toCurrency()
         }
     }
 

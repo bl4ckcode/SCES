@@ -34,7 +34,7 @@
     <string name="title_categories">Categorias</string>
     <string name="add_order_items">Adicionar item de pedido</string>
     <string name="title_order_items">Itens</string>
-    <string name="orderItem_amount">Quantide de itens de pedido</string>
+    <string name="orderItem_amount">Quantidade de itens de pedido</string>
     <string name="orderItem_id">ID Item Pedido</string>
     <string name="search_term">Termo</string>
     <string name="title_search">Pesquisa</string>

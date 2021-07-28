@@ -38,23 +38,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/orderItem_id_text_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/orderItem_id"
-                android:tooltipText="@string/orderItem_id">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/orderItem_id_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:inputType="number"
-                    android:text="@={id}" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/order_item_amount_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

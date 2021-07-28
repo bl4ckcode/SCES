@@ -9,7 +9,7 @@ import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.models.Pedido
 
 class OrderAdapter(
-    private val orders: List<Pedido>,
+    private val orders: ArrayList<Pedido>,
     private val orderAdapterListener: OrderAdapterListener
 ) : RecyclerView.Adapter<OrderAdapter.OrderAdapterViewHolder>() {
     interface OrderAdapterListener {

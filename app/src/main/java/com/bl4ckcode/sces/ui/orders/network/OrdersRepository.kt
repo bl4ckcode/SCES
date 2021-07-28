@@ -86,8 +86,7 @@ class OrdersRepository(apiKey: String) {
                                 pedido.clientes = cliente
 
                                 if (orderResponse.itensPedido.isNotEmpty()) {
-                                    itensPedido.add(orderResponse.itensPedido.mapNotNull { it?.asItensPedido() }
-                                        .first())
+                                    itensPedido.addAll(orderResponse.itensPedido.mapNotNull { it?.asItensPedido() })
                                 }
 
                                 pedidos.add(pedido)

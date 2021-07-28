@@ -16,7 +16,6 @@ import com.bl4ckcode.sces.databinding.FragmentOrdersBinding
 import com.bl4ckcode.sces.models.ItensPedido
 import com.bl4ckcode.sces.models.Pedido
 import com.bl4ckcode.sces.ui.orders.detail.DetailOrderFragment
-import com.bl4ckcode.sces.ui.products.list.ProductFragment
 import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.setNavigationResult
 import com.bl4ckcode.sces.util.show
@@ -26,6 +25,8 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
     private lateinit var ordersViewModel: OrdersViewModel
     private var _binding: FragmentOrdersBinding? = null
     private val binding get() = _binding!!
+
+    private var ordersList: ArrayList<Pedido> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,8 +51,9 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
         ordersViewModel.orders()
 
         arguments?.let {
-            if (it.containsKey(ProductFragment.SELECT_PRODUCT)) {
+            if (it.containsKey(SELECT_ORDER)) {
                 binding.btnCreateOrder.hide()
+                binding.btnGenOrderLog.hide()
                 (activity as? MainActivity)?.hideBottomNav()
             }
         }
@@ -60,9 +62,10 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
             orderUiModel?.pedidos?.let {
                 binding.progress.hide()
 
-                val productsAdapter = OrderAdapter(it, this)
+                ordersList = ArrayList(it)
+
+                binding.ordersList.adapter = OrderAdapter(ordersList, this)
                 binding.ordersList.layoutManager = LinearLayoutManager(context)
-                binding.ordersList.adapter = productsAdapter
             }
 
             orderUiModel?.hasError?.also {

@@ -58,6 +58,9 @@ class DetailOrderItemsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.order = "Selecionar pedido"
+        binding.product = "Selecionar produto"
+
         binding.btnCreateEditOrderItem.setImageDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
@@ -139,8 +142,6 @@ class DetailOrderItemsFragment : Fragment() {
                     binding.product = product.nome
                     binding.order = order.codigoPedido
                     binding.amount = itemPedido.quantidade.toString()
-
-                    binding.orderItemIdEditText.isEnabled = false
 
                     binding.btnDeleteOrderItem.show()
                     binding.btnCreateEditOrderItem.setImageDrawable(

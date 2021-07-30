@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.bl4ckcode.sces.ui.orderItems.list.model.OrderItemsUiModel
 import com.bl4ckcode.sces.ui.orders.list.OrdersViewModel
 import com.bl4ckcode.sces.ui.orders.list.model.OrderUiModel
 import com.bl4ckcode.sces.ui.orders.network.OrdersRepository
@@ -21,6 +22,9 @@ class OrdersViewModelTest {
 
     @Mock
     var orderObserver: Observer<OrderUiModel?> = Observer {}
+
+    @Mock
+    var itemOrderObserver: Observer<OrderItemsUiModel?> = Observer {}
 
     @Before
     fun setUp() {
@@ -50,29 +54,29 @@ class OrdersViewModelTest {
         Mockito.verify(orderObserver).onChanged(orderUiModelMock)
     }
 
-    /** Retorno Total Pedido
+    /** Retorno Total Item Pedido
      */
     @Test
     @Throws(Exception::class)
     fun testGetOrdersForDate() {
         val repositoryMock = Mockito.mock(OrdersRepository::class.java)
         val applicationMock = Mockito.mock(Application::class.java)
-        val orderUiModelMock = Mockito.mock(OrderUiModel::class.java)
+        val orderItemUiModel = Mockito.mock(OrderItemsUiModel::class.java)
 
-        Mockito.`when`(repositoryMock.ordersLiveData)
-            .thenReturn(MutableLiveData<OrderUiModel?>())
+        Mockito.`when`(repositoryMock.orderItemsLiveData)
+            .thenReturn(MutableLiveData<OrderItemsUiModel?>())
 
         Mockito.`when`(repositoryMock.getOrders("", date = "")).then {
-            repositoryMock.ordersLiveData.postValue(orderUiModelMock)
+            repositoryMock.orderItemsLiveData.postValue(orderItemUiModel)
         }
 
         val viewModel = OrdersViewModel(applicationMock, repositoryMock)
 
-        viewModel.ordersLiveData.observeForever(orderObserver)
+        viewModel.orderItemsLiveData.observeForever(itemOrderObserver)
 
         viewModel.orderLogForDate("", "")
 
-        Mockito.verify(orderObserver).onChanged(orderUiModelMock)
+        Mockito.verify(itemOrderObserver).onChanged(orderItemUiModel)
     }
 
     @After

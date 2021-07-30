@@ -31,9 +31,9 @@ interface CategoryApi {
     ): Call<Category?>
 }
 
-class CategoryRepository(apiKey: String) {
+class CategoryRepository {
 
-    private val categoryApi: CategoryApi = ApiBuilder.create(CategoryApi::class.java, apiKey)
+    private lateinit var categoryApi: CategoryApi
     private val _categoryLiveData: MutableLiveData<CategoryUiModel?> =
         MutableLiveData<CategoryUiModel?>()
 
@@ -46,7 +46,9 @@ class CategoryRepository(apiKey: String) {
     val detailCategoryLiveData: MutableLiveData<DetailCategoryUiModel?>
         get() = _detailCategoryLiveData
 
-    fun getCategories() {
+    fun getCategories(apiKey: String) {
+        categoryApi = ApiBuilder.create(CategoryApi::class.java, apiKey)
+
         categoryApi.getCategories()
             .enqueue(object : Callback<List<Category>?> {
                 override fun onResponse(
@@ -86,7 +88,9 @@ class CategoryRepository(apiKey: String) {
             })
     }
 
-    fun category(step: Step, categoria: Categoria) {
+    fun category(step: Step, categoria: Categoria, apiKey: String) {
+        categoryApi = ApiBuilder.create(CategoryApi::class.java, apiKey)
+
         val call: Call<Category?> = when (step) {
             Step.CREATE -> categoryApi.postCategory(Category(categoria = categoria))
             Step.EDIT -> categoryApi.putCategory(categoria.codigo, Category(categoria))

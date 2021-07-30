@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.bl4ckcode.sces.R
@@ -16,10 +16,21 @@ import com.bl4ckcode.sces.models.Categoria
 import com.bl4ckcode.sces.models.EcommerceposFactory
 import com.bl4ckcode.sces.models.Produto
 import com.bl4ckcode.sces.ui.products.categories.CategoriesFragment
-import com.bl4ckcode.sces.util.*
+import com.bl4ckcode.sces.util.ViewModelFactory
+import com.bl4ckcode.sces.ui.products.network.ProductRepository
+import com.bl4ckcode.sces.util.getNavigationResult
+import com.bl4ckcode.sces.util.hide
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
+import com.bl4ckcode.sces.util.show
+import com.bl4ckcode.sces.util.toCurrencyString
 
 class DetailProductFragment : Fragment() {
-    private lateinit var detailProductViewModel: DetailProductViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val detailProductViewModel: DetailProductViewModel by viewModels {
+        ViewModelFactory(requireActivity().application, ProductRepository())
+    }
     private var _binding: FragmentDetailProductBinding? = null
     private val binding get() = _binding!!
 
@@ -36,8 +47,6 @@ class DetailProductFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        detailProductViewModel =
-            ViewModelProvider(this).get(DetailProductViewModel::class.java)
         _binding = FragmentDetailProductBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,10 +67,16 @@ class DetailProductFragment : Fragment() {
             binding.progress.show()
             arguments?.let {
                 if (it.containsKey(ARG_PRODUCT)) {
-                    detailProductViewModel.editProduct(getProductFromBinding())
+                    detailProductViewModel.editProduct(
+                        getProductFromBinding(),
+                        preferenceHelper.getApiKey()
+                    )
                 }
             } ?: run {
-                detailProductViewModel.createProduct(getProductFromBinding())
+                detailProductViewModel.createProduct(
+                    getProductFromBinding(),
+                    preferenceHelper.getApiKey()
+                )
             }
         }
 
@@ -69,7 +84,10 @@ class DetailProductFragment : Fragment() {
             arguments?.let {
                 binding.progress.show()
                 if (it.containsKey(ARG_PRODUCT)) {
-                    detailProductViewModel.deleteProduct(getProductFromBinding())
+                    detailProductViewModel.deleteProduct(
+                        getProductFromBinding(),
+                        preferenceHelper.getApiKey()
+                    )
                 }
             }
         }

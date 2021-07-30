@@ -7,29 +7,28 @@ import com.bl4ckcode.sces.models.Categoria
 import com.bl4ckcode.sces.ui.products.categories.detail.model.DetailCategoryUiModel
 import com.bl4ckcode.sces.ui.products.network.CategoryRepository
 import com.bl4ckcode.sces.ui.products.network.Step
-import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
-import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 
-class DetailCategoryViewModel(application: Application) : AndroidViewModel(application) {
-    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(application) }
-
+class DetailCategoryViewModel(
+    application: Application,
     private val categoryRepository: CategoryRepository =
-        CategoryRepository(preferenceHelper.getApiKey())
+        CategoryRepository()
+) : AndroidViewModel(application) {
+
     private var _detailCategoryLiveData: LiveData<DetailCategoryUiModel?> =
         categoryRepository.detailCategoryLiveData
 
     val detailCategoryLiveData: LiveData<DetailCategoryUiModel?>
         get() = _detailCategoryLiveData
 
-    fun createCategory(category: Categoria) {
-        categoryRepository.category(Step.CREATE, category)
+    fun createCategory(category: Categoria, apiKey: String) {
+        categoryRepository.category(Step.CREATE, category, apiKey)
     }
 
-    fun editCategory(category: Categoria) {
-        categoryRepository.category(Step.EDIT, category)
+    fun editCategory(category: Categoria, apiKey: String) {
+        categoryRepository.category(Step.EDIT, category, apiKey)
     }
 
-    fun deleteCategory(category: Categoria) {
-        categoryRepository.category(Step.DELETE, category)
+    fun deleteCategory(category: Categoria, apiKey: String) {
+        categoryRepository.category(Step.DELETE, category, apiKey)
     }
 }

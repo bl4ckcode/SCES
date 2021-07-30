@@ -7,17 +7,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.databinding.FragmentDetailCategoryBinding
 import com.bl4ckcode.sces.models.Categoria
 import com.bl4ckcode.sces.models.EcommerceposFactory
+import com.bl4ckcode.sces.util.ViewModelFactory
+import com.bl4ckcode.sces.ui.products.network.CategoryRepository
 import com.bl4ckcode.sces.util.hide
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 import com.bl4ckcode.sces.util.show
 
 class DetailCategoryFragment : Fragment() {
-    private lateinit var detailCategoryViewModel: DetailCategoryViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val detailCategoryViewModel: DetailCategoryViewModel by viewModels {
+        ViewModelFactory(requireActivity().application, CategoryRepository())
+    }
+
     private var _binding: FragmentDetailCategoryBinding? = null
     private val binding get() = _binding!!
 
@@ -31,8 +40,6 @@ class DetailCategoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        detailCategoryViewModel =
-            ViewModelProvider(this).get(DetailCategoryViewModel::class.java)
         _binding = FragmentDetailCategoryBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,10 +65,16 @@ class DetailCategoryFragment : Fragment() {
             binding.progress.show()
             arguments?.let {
                 if (it.containsKey(ARG_CATEGORY)) {
-                    detailCategoryViewModel.editCategory(getCategoryFromBinding())
+                    detailCategoryViewModel.editCategory(
+                        getCategoryFromBinding(),
+                        preferenceHelper.getApiKey()
+                    )
                 }
             } ?: run {
-                detailCategoryViewModel.createCategory(getCategoryFromBinding())
+                detailCategoryViewModel.createCategory(
+                    getCategoryFromBinding(),
+                    preferenceHelper.getApiKey()
+                )
             }
         }
 
@@ -69,7 +82,10 @@ class DetailCategoryFragment : Fragment() {
             arguments?.let {
                 binding.progress.show()
                 if (it.containsKey(ARG_CATEGORY)) {
-                    detailCategoryViewModel.deleteCategory(getCategoryFromBinding())
+                    detailCategoryViewModel.deleteCategory(
+                        getCategoryFromBinding(),
+                        preferenceHelper.getApiKey()
+                    )
                 }
             }
         }

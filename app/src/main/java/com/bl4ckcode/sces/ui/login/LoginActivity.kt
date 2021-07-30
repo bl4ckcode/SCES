@@ -3,12 +3,14 @@ package com.bl4ckcode.sces.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
 import com.bl4ckcode.sces.MainActivity
 import com.bl4ckcode.sces.databinding.ActivityLoginBinding
+import com.bl4ckcode.sces.ui.login.network.LoginRepository
 import com.bl4ckcode.sces.ui.login.register.RegisterActivity
+import com.bl4ckcode.sces.util.ViewModelFactory
 import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
 import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
@@ -17,7 +19,13 @@ import com.bl4ckcode.sces.util.show
 class LoginActivity : AppCompatActivity() {
     private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(applicationContext) }
 
-    private lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModels {
+        ViewModelFactory(
+            application,
+            LoginRepository()
+        )
+    }
+
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +39,6 @@ class LoginActivity : AppCompatActivity() {
             intent.putExtra(MainActivity.KEY, preferenceHelper.getApiKey())
             startActivity(intent)
         }
-
-        loginViewModel =
-            ViewModelProvider(this).get(LoginViewModel::class.java)
 
         binding.irLoginButton.isEnabled = false
         binding.irLoginButton.setOnClickListener {

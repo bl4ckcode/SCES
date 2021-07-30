@@ -7,14 +7,12 @@ import com.bl4ckcode.sces.models.ItensPedido
 import com.bl4ckcode.sces.ui.orderItems.detail.model.DetailOrderItemsUiModel
 import com.bl4ckcode.sces.ui.orderItems.network.OrderItemsRepository
 import com.bl4ckcode.sces.ui.products.network.Step
-import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
-import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 
-class DetailOrderItemsViewModel(application: Application) : AndroidViewModel(application) {
-    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(application) }
+class DetailOrderItemsViewModel(
+    application: Application,
+    private val orderItemsRepository: OrderItemsRepository
+) : AndroidViewModel(application) {
 
-    private val orderItemsRepository: OrderItemsRepository =
-        OrderItemsRepository(preferenceHelper.getApiKey())
     private var _detailProductLiveData: LiveData<DetailOrderItemsUiModel?> =
         orderItemsRepository.detailOrderItemLiveData
 

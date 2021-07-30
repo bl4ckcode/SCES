@@ -7,29 +7,27 @@ import com.bl4ckcode.sces.models.Produto
 import com.bl4ckcode.sces.ui.products.detail.model.DetailProductUiModel
 import com.bl4ckcode.sces.ui.products.network.ProductRepository
 import com.bl4ckcode.sces.ui.products.network.Step
-import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
-import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 
-class DetailProductViewModel(application: Application) : AndroidViewModel(application) {
-    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(application) }
+class DetailProductViewModel(
+    application: Application, private val productRepository: ProductRepository =
+        ProductRepository()
+) : AndroidViewModel(application) {
 
-    private val productRepository: ProductRepository =
-        ProductRepository(preferenceHelper.getApiKey())
     private var _detailProductLiveData: LiveData<DetailProductUiModel?> =
         productRepository.detailProductLiveData
 
     val detailProductLiveData: LiveData<DetailProductUiModel?>
         get() = _detailProductLiveData
 
-    fun createProduct(product: Produto) {
-        productRepository.product(Step.CREATE, product)
+    fun createProduct(product: Produto, apiKey: String) {
+        productRepository.product(Step.CREATE, product, apiKey)
     }
 
-    fun editProduct(product: Produto) {
-        productRepository.product(Step.EDIT, product)
+    fun editProduct(product: Produto, apiKey: String) {
+        productRepository.product(Step.EDIT, product, apiKey)
     }
 
-    fun deleteProduct(product: Produto) {
-        productRepository.product(Step.DELETE, product)
+    fun deleteProduct(product: Produto, apiKey: String) {
+        productRepository.product(Step.DELETE, product, apiKey)
     }
 }

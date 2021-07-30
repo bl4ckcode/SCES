@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.bl4ckcode.sces.R
@@ -16,15 +16,23 @@ import com.bl4ckcode.sces.models.EcommerceposFactory
 import com.bl4ckcode.sces.models.ItensPedido
 import com.bl4ckcode.sces.models.Pedido
 import com.bl4ckcode.sces.models.Produto
+import com.bl4ckcode.sces.ui.orderItems.network.OrderItemsRepository
 import com.bl4ckcode.sces.ui.orders.list.OrdersFragment
 import com.bl4ckcode.sces.ui.products.list.ProductFragment
-import com.bl4ckcode.sces.util.getNavigationResult
-import com.bl4ckcode.sces.util.hide
-import com.bl4ckcode.sces.util.setNavigationResult
-import com.bl4ckcode.sces.util.show
+import com.bl4ckcode.sces.util.*
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 
 class DetailOrderItemsFragment : Fragment() {
-    private lateinit var detailOrderItemsViewModel: DetailOrderItemsViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val detailOrderItemsViewModel: DetailOrderItemsViewModel by viewModels {
+        ViewModelFactory(
+            requireActivity().application,
+            OrderItemsRepository(preferenceHelper.getApiKey())
+        )
+    }
+
     private var _binding: FragmentDetailOrderItemsBinding? = null
     private val binding get() = _binding!!
 
@@ -44,8 +52,6 @@ class DetailOrderItemsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        detailOrderItemsViewModel =
-            ViewModelProvider(this).get(DetailOrderItemsViewModel::class.java)
         _binding = FragmentDetailOrderItemsBinding.inflate(inflater, container, false)
         return binding.root
     }

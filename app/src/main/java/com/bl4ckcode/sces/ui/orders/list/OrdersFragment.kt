@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,13 +16,22 @@ import com.bl4ckcode.sces.databinding.FragmentOrdersBinding
 import com.bl4ckcode.sces.models.ItensPedido
 import com.bl4ckcode.sces.models.Pedido
 import com.bl4ckcode.sces.ui.orders.detail.DetailOrderFragment
+import com.bl4ckcode.sces.ui.orders.network.OrdersRepository
+import com.bl4ckcode.sces.util.ViewModelFactory
 import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.setNavigationResult
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 import com.bl4ckcode.sces.util.show
 import java.io.Serializable
 
 class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
-    private lateinit var ordersViewModel: OrdersViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val ordersViewModel: OrdersViewModel by viewModels {
+        ViewModelFactory(requireActivity().application, OrdersRepository())
+    }
+
     private var _binding: FragmentOrdersBinding? = null
     private val binding get() = _binding!!
 
@@ -33,8 +42,6 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        ordersViewModel =
-            ViewModelProvider(this).get(OrdersViewModel::class.java)
         _binding = FragmentOrdersBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,7 +55,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderAdapterListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progress.show()
-        ordersViewModel.orders()
+        ordersViewModel.orders(preferenceHelper.getApiKey())
 
         arguments?.let {
             if (it.containsKey(SELECT_ORDER)) {

@@ -1,12 +1,16 @@
 package com.bl4ckcode.sces.ui.login
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import com.bl4ckcode.sces.ui.login.network.LoginRepository
 import com.bl4ckcode.sces.ui.login.network.models.LoginResponse
 
-class LoginViewModel : ViewModel() {
-    private val loginRepository: LoginRepository = LoginRepository()
+class LoginViewModel(
+    application: Application,
+    private val loginRepository: LoginRepository
+) : AndroidViewModel(application) {
+
     private var _loginLiveData: LiveData<LoginResponse> = loginRepository.loginLiveData
 
     val loginLiveData: LiveData<LoginResponse>

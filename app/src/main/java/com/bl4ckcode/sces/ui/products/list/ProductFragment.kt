@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,15 +15,24 @@ import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.databinding.FragmentProductsBinding
 import com.bl4ckcode.sces.models.Produto
 import com.bl4ckcode.sces.ui.products.detail.DetailProductFragment
+import com.bl4ckcode.sces.ui.products.network.ProductRepository
 import com.bl4ckcode.sces.ui.search.SearchFragment
 import com.bl4ckcode.sces.ui.search.TypeSearch
 import com.bl4ckcode.sces.ui.search.TypeSearchEnum
+import com.bl4ckcode.sces.util.ViewModelFactory
 import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.setNavigationResult
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 import com.bl4ckcode.sces.util.show
 
 class ProductFragment : Fragment(), ProductAdapter.ProductAdapterListener {
-    private lateinit var productViewModel: ProductViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val productViewModel: ProductViewModel by viewModels {
+        ViewModelFactory(requireActivity().application, ProductRepository())
+    }
+
     private var _binding: FragmentProductsBinding? = null
     private val binding get() = _binding!!
 
@@ -40,8 +49,6 @@ class ProductFragment : Fragment(), ProductAdapter.ProductAdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        productViewModel =
-            ViewModelProvider(this).get(ProductViewModel::class.java)
         _binding = FragmentProductsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,7 +62,7 @@ class ProductFragment : Fragment(), ProductAdapter.ProductAdapterListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progress.show()
-        productViewModel.products()
+        productViewModel.products(preferenceHelper.getApiKey())
 
         arguments?.let {
             if (it.containsKey(SELECT_PRODUCT)) {

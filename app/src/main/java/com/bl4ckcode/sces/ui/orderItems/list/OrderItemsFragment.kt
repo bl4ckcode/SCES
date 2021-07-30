@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bl4ckcode.sces.MainActivity
@@ -14,11 +14,23 @@ import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.databinding.FragmentOrderItemsBinding
 import com.bl4ckcode.sces.models.ItensPedido
 import com.bl4ckcode.sces.ui.orderItems.detail.DetailOrderItemsFragment
+import com.bl4ckcode.sces.ui.orderItems.network.OrderItemsRepository
+import com.bl4ckcode.sces.util.ViewModelFactory
 import com.bl4ckcode.sces.util.hide
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 import com.bl4ckcode.sces.util.show
 
 class OrderItemsFragment : Fragment(), OrderItemsAdapter.OrderItemsAdapterAdapterListener {
-    private lateinit var orderItemsViewModel: OrderItemsViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val orderItemsViewModel: OrderItemsViewModel by viewModels {
+        ViewModelFactory(
+            requireActivity().application,
+            OrderItemsRepository(preferenceHelper.getApiKey())
+        )
+    }
+
     private var _binding: FragmentOrderItemsBinding? = null
     private val binding get() = _binding!!
 
@@ -27,8 +39,6 @@ class OrderItemsFragment : Fragment(), OrderItemsAdapter.OrderItemsAdapterAdapte
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        orderItemsViewModel =
-            ViewModelProvider(this).get(OrderItemsViewModel::class.java)
         _binding = FragmentOrderItemsBinding.inflate(inflater, container, false)
         return binding.root
     }

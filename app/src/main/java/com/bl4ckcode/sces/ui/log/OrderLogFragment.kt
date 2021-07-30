@@ -6,18 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bl4ckcode.sces.databinding.FragmentOrderLogBinding
 import com.bl4ckcode.sces.models.Pedido
 import com.bl4ckcode.sces.ui.orders.list.OrdersViewModel
+import com.bl4ckcode.sces.ui.orders.network.OrdersRepository
+import com.bl4ckcode.sces.util.ViewModelFactory
 import com.bl4ckcode.sces.util.hide
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 import com.bl4ckcode.sces.util.show
 import java.util.*
 import kotlin.collections.ArrayList
 
 class OrderLogFragment : Fragment() {
-    private lateinit var ordersViewModel: OrdersViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val ordersViewModel: OrdersViewModel by viewModels {
+        ViewModelFactory(requireActivity().application, OrdersRepository())
+    }
+
     private var _binding: FragmentOrderLogBinding? = null
     private val binding get() = _binding!!
 
@@ -29,8 +38,6 @@ class OrderLogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        ordersViewModel =
-            ViewModelProvider(this).get(OrdersViewModel::class.java)
         _binding = FragmentOrderLogBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,7 +62,7 @@ class OrderLogFragment : Fragment() {
             binding.progress.show()
 
             val monthFixed = month + 1
-            ordersViewModel.orderLogForDate("$year-$monthFixed-$day")
+            ordersViewModel.orderLogForDate(preferenceHelper.getApiKey(), "$year-$monthFixed-$day")
         }
 
         ordersViewModel.ordersLiveData.observe(viewLifecycleOwner, { orderUiModel ->
@@ -85,7 +92,7 @@ class OrderLogFragment : Fragment() {
 
                     itemPedido.forEach {
                         produtos += "${it.produto.nome} \n"
-                        price += it.produto.preco
+                        price += it.produto.preco * it.quantidade
                     }
 
                     pedido.clientes.endereco = produtos

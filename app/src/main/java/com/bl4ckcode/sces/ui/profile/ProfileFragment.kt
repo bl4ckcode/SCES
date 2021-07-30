@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.bl4ckcode.sces.databinding.FragmentProfileBinding
 import com.bl4ckcode.sces.models.EcommerceposFactory
+import com.bl4ckcode.sces.ui.profile.network.ClientRepository
+import com.bl4ckcode.sces.util.ViewModelFactory
 import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
 import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
@@ -17,7 +19,13 @@ import com.bl4ckcode.sces.util.show
 class ProfileFragment : Fragment() {
     private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private val profileViewModel: ProfileViewModel by viewModels {
+        ViewModelFactory(
+            requireActivity().application,
+            ClientRepository(preferenceHelper.getApiKey())
+        )
+    }
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -26,8 +34,6 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }

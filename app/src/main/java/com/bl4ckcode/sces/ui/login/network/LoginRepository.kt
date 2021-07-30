@@ -1,6 +1,5 @@
 package com.bl4ckcode.sces.ui.login.network
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bl4ckcode.sces.ui.login.network.models.LoginResponse
 import com.bl4ckcode.sces.util.ApiBuilder
@@ -39,7 +38,7 @@ class LoginRepository {
     private val loginApi: LoginApi = ApiBuilder.create(LoginApi::class.java)
     private val _loginLiveData: MutableLiveData<LoginResponse> = MutableLiveData<LoginResponse>()
 
-    val loginLiveData: LiveData<LoginResponse>
+    val loginLiveData: MutableLiveData<LoginResponse>
         get() = _loginLiveData
 
     fun login(email: String?, password: String?) {

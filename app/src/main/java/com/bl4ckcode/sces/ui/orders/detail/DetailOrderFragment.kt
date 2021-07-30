@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bl4ckcode.sces.R
@@ -15,6 +15,8 @@ import com.bl4ckcode.sces.databinding.FragmentDetailOrderBinding
 import com.bl4ckcode.sces.models.EcommerceposFactory
 import com.bl4ckcode.sces.models.ItensPedido
 import com.bl4ckcode.sces.models.Pedido
+import com.bl4ckcode.sces.ui.orders.network.OrdersRepository
+import com.bl4ckcode.sces.util.ViewModelFactory
 import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
 import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
@@ -24,7 +26,9 @@ import com.bl4ckcode.sces.util.toCurrency
 class DetailOrderFragment : Fragment() {
     private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
 
-    private lateinit var detailOrderViewModel: DetailOrderViewModel
+    private val detailOrderViewModel: DetailOrderViewModel by viewModels {
+        ViewModelFactory(requireActivity().application, OrdersRepository())
+    }
     private var _binding: FragmentDetailOrderBinding? = null
     private val binding get() = _binding!!
 
@@ -35,8 +39,6 @@ class DetailOrderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        detailOrderViewModel =
-            ViewModelProvider(this).get(DetailOrderViewModel::class.java)
         _binding = FragmentDetailOrderBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,10 +67,16 @@ class DetailOrderFragment : Fragment() {
             binding.progress.show()
             arguments?.let {
                 if (it.containsKey(ARG_ORDER)) {
-                    detailOrderViewModel.editOrder(getOrderFromBinding())
+                    detailOrderViewModel.editOrder(
+                        getOrderFromBinding(),
+                        preferenceHelper.getApiKey()
+                    )
                 }
             } ?: run {
-                detailOrderViewModel.createOrder(getOrderFromBinding())
+                detailOrderViewModel.createOrder(
+                    getOrderFromBinding(),
+                    preferenceHelper.getApiKey()
+                )
             }
         }
 
@@ -76,7 +84,10 @@ class DetailOrderFragment : Fragment() {
             arguments?.let {
                 binding.progress.show()
                 if (it.containsKey(ARG_ORDER)) {
-                    detailOrderViewModel.deleteOrder(getOrderFromBinding())
+                    detailOrderViewModel.deleteOrder(
+                        getOrderFromBinding(),
+                        preferenceHelper.getApiKey()
+                    )
                 }
             }
         }

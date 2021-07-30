@@ -35,9 +35,10 @@ interface ProductApi {
     ): Call<ProductResponse?>
 }
 
-class ProductRepository(apiKey: String) {
+class ProductRepository {
 
-    private val productApi: ProductApi = ApiBuilder.create(ProductApi::class.java, apiKey)
+    private lateinit var productApi: ProductApi
+
     private val _productLiveData: MutableLiveData<ProductUiModel?> =
         MutableLiveData<ProductUiModel?>()
 
@@ -50,7 +51,9 @@ class ProductRepository(apiKey: String) {
     val detailProductLiveData: MutableLiveData<DetailProductUiModel?>
         get() = _detailProductLiveData
 
-    fun getProducts() {
+    fun getProducts(apiKey: String) {
+        productApi = ApiBuilder.create(ProductApi::class.java, apiKey)
+
         productApi.getProducts()
             .enqueue(object : Callback<List<ProductResponse>?> {
                 override fun onResponse(
@@ -70,7 +73,8 @@ class ProductRepository(apiKey: String) {
                                 produto.codigoProduto = productResponse.codigoProduto
                                 produto.nome = productResponse.nome
                                 produto.preco = productResponse.preco?.toDouble() ?: run { 0.0 }
-                                produto.quantidadeEstoque = productResponse.quantidadeEstoque?.toDouble() ?: run { 0.0 }
+                                produto.quantidadeEstoque =
+                                    productResponse.quantidadeEstoque?.toDouble() ?: run { 0.0 }
                                 produto.cetgorias = categoria
 
                                 produtos.add(produto)
@@ -91,7 +95,9 @@ class ProductRepository(apiKey: String) {
             })
     }
 
-    fun product(step: Step, product: Produto) {
+    fun product(step: Step, product: Produto, apiKey: String) {
+        productApi = ApiBuilder.create(ProductApi::class.java, apiKey)
+
         val call: Call<ProductResponse?> = when (step) {
             Step.CREATE -> productApi.postProduct(ProductResponse(product))
             Step.EDIT -> productApi.putProduct(product.codigoProduto, ProductResponse(product))
@@ -127,7 +133,12 @@ class ProductRepository(apiKey: String) {
                             )
                         } ?: run {
                             if (step == Step.DELETE) {
-                                _detailProductLiveData.postValue(DetailProductUiModel(false, produto = product))
+                                _detailProductLiveData.postValue(
+                                    DetailProductUiModel(
+                                        false,
+                                        produto = product
+                                    )
+                                )
                             }
                         }
                     }

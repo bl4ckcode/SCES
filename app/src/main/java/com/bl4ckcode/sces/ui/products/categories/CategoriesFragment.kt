@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,15 +15,23 @@ import com.bl4ckcode.sces.R
 import com.bl4ckcode.sces.databinding.FragmentCategoriesBinding
 import com.bl4ckcode.sces.models.Categoria
 import com.bl4ckcode.sces.ui.products.categories.detail.DetailCategoryFragment
+import com.bl4ckcode.sces.util.ViewModelFactory
+import com.bl4ckcode.sces.ui.products.network.CategoryRepository
 import com.bl4ckcode.sces.ui.search.SearchFragment
 import com.bl4ckcode.sces.ui.search.TypeSearch
 import com.bl4ckcode.sces.ui.search.TypeSearchEnum
 import com.bl4ckcode.sces.util.hide
 import com.bl4ckcode.sces.util.setNavigationResult
+import com.bl4ckcode.sces.util.sharedpreferences.IPreferenceHelper
+import com.bl4ckcode.sces.util.sharedpreferences.PreferenceManager
 import com.bl4ckcode.sces.util.show
 
 class CategoriesFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
-    private lateinit var categoryViewModel: CategoriesViewModel
+    private val preferenceHelper: IPreferenceHelper by lazy { PreferenceManager(requireContext()) }
+
+    private val categoryViewModel: CategoriesViewModel by viewModels {
+        ViewModelFactory(requireActivity().application, CategoryRepository())
+    }
     private var _binding: FragmentCategoriesBinding? = null
     private val binding get() = _binding!!
 
@@ -34,8 +42,6 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        categoryViewModel =
-            ViewModelProvider(this).get(CategoriesViewModel::class.java)
         _binding = FragmentCategoriesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,7 +55,7 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progress.show()
-        categoryViewModel.categories()
+        categoryViewModel.categories(preferenceHelper.getApiKey())
 
         arguments?.let {
             if (it.containsKey(SELECT_CATEGORY)) {

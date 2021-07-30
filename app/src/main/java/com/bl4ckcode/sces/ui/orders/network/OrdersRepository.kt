@@ -37,8 +37,8 @@ interface OrdersApi {
     ): Call<OrdersResponse?>
 }
 
-class OrdersRepository(apiKey: String) {
-    private val ordersApi: OrdersApi = ApiBuilder.create(OrdersApi::class.java, apiKey)
+class OrdersRepository {
+    private lateinit var ordersApi: OrdersApi
     private val _ordersLiveData: MutableLiveData<OrderUiModel?> = MutableLiveData<OrderUiModel?>()
     private val _detailOrdersLiveData: MutableLiveData<DetailOrderUiModel?> =
         MutableLiveData<DetailOrderUiModel?>()
@@ -54,7 +54,9 @@ class OrdersRepository(apiKey: String) {
     val detailOrderLiveData: MutableLiveData<DetailOrderUiModel?>
         get() = _detailOrdersLiveData
 
-    fun getOrders(date: String? = null) {
+    fun getOrders(apiKey: String, date: String? = null) {
+        ordersApi = ApiBuilder.create(OrdersApi::class.java, apiKey)
+
         var call: Call<List<OrdersResponse>?>? = null
 
         date?.let {
@@ -114,7 +116,9 @@ class OrdersRepository(apiKey: String) {
         }
     }
 
-    fun order(step: Step, order: Pedido) {
+    fun order(step: Step, order: Pedido, apiKey: String) {
+        ordersApi = ApiBuilder.create(OrdersApi::class.java, apiKey)
+
         val call: Call<OrdersResponse?> = when (step) {
             Step.CREATE -> ordersApi.postOrder(OrdersResponse(order))
             Step.EDIT -> ordersApi.putOrder(order.codigoPedido, OrdersResponse(order))
